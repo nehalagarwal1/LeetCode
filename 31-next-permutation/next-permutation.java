@@ -1,40 +1,59 @@
 class Solution {
     public void nextPermutation(int[] nums) {
+        
         int n = nums.length;
-        int i = n - 2;
+        int index = -1;
 
-        // Step 1: Find the pivot
-        while (i >= 0 && nums[i] >= nums[i + 1]) {
-            i--;
+        for(int i=n-2; i>=0; i--){
+
+            if(nums[i] < nums[i+1]){
+
+                index = i;
+                break;
+
+            }
         }
 
-        // Step 2: Find the smallest number greater than the pivot
-        if (i >= 0) {
-            int j = n - 1;
 
-            while (nums[j] <= nums[i]) {
-                j--;
+        if(index == -1){
+
+            for(int i=0; i<n/2; i++){
+
+                int temp = nums[i];
+                nums[i] = nums[n-i-1];
+                nums[n-i-1] = temp;
+
             }
 
-            // Step 3: Swap pivot and successor
-            swap(nums, i, j);
+            return;
         }
 
-        // Step 4: Reverse the suffix
-        reverse(nums, i + 1, n - 1);
-    }
+        for(int i=n-1; i>=0; i--){
 
-    private void swap(int[] nums, int i, int j) {
-        int temp = nums[i];
-        nums[i] = nums[j];
-        nums[j] = temp;
-    }
+            if(nums[i] > nums[index]){
 
-    private void reverse(int[] nums, int left, int right) {
-        while (left < right) {
-            swap(nums, left, right);
+                int temp = nums[i];
+                nums[i] = nums[index];
+                nums[index] = temp;
+                break;
+
+            }
+        }
+
+        int left = index + 1;
+        int right = n - 1;
+
+        while(left < right){
+
+            int temp = nums[left];
+            nums[left] = nums[right];
+            nums[right] = temp;
+
             left++;
             right--;
+
         }
+
+
     }
 }
